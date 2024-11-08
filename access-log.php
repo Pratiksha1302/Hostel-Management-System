@@ -34,7 +34,7 @@ check_login();
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="page-title" style="margin-top:4%">Access Log</h2>
+						<h2 class="page-title" style="margin-top: 2%">Access Log</h2>
 						<div class="panel panel-default">
 							<div class="panel-heading">All Courses Details</div>
 							<div class="panel-body">
@@ -64,9 +64,9 @@ check_login();
 									<tbody>
 <?php	
 $aid=$_SESSION['id'];
-$ret="select * from userlog";
+$ret="select * from userlog where userId=?";
 $stmt= $mysqli->prepare($ret) ;
-//$stmt->bind_param('i',$aid);
+$stmt->bind_param('i',$aid);
 $stmt->execute() ;
 $res=$stmt->get_result();
 $cnt=1;

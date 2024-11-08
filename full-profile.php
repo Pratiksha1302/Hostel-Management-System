@@ -1,5 +1,6 @@
 <?php
 session_start();
+//include("includes/config.php");
 define('DB_SERVER','localhost');
 define('DB_USER','root');
 define('DB_PASS' ,'');
@@ -33,7 +34,7 @@ window.print();
 <body>
 <table width="100%" border="0">
 <?php 
-		 $ret= mysqli_query($con,"SELECT * FROM registration where id = '".$_GET['id']."'");
+		 $ret= mysqli_query($con,"SELECT * FROM registration where emailid = '".$_GET['id']."'");
 			while($row=mysqli_fetch_array($ret))
 			{
 			?>
