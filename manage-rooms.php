@@ -3,6 +3,17 @@ session_start();
 include('includes/config.php');
 include('includes/checklogin.php');
 check_login();
+
+if(isset($_GET['del']))
+{
+	$id=intval($_GET['del']);
+	$adn="delete from rooms where id=?";
+		$stmt= $mysqli->prepare($adn);
+		$stmt->bind_param('i',$id);
+        $stmt->execute();
+        $stmt->close();	   
+        echo "<script>alert('Data Deleted');</script>" ;
+}
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -14,7 +25,7 @@ check_login();
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="theme-color" content="#3e454c">
-	<title>Access Log</title>
+	<title>Manage Rooms</title>
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
@@ -34,52 +45,53 @@ check_login();
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="page-title" style="margin-top:4%">Access Log</h2>
+						<h2 class="page-title" style="margin-top: 4%">Manage Rooms</h2>
 						<div class="panel panel-default">
-							<div class="panel-heading">All Courses Details</div>
+							<div class="panel-heading">All Room Details</div>
 							<div class="panel-body">
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
 											<th>Sno.</th>
-											<th>User Id</th>
-											<th>User Email</th>
-											<th>IP</th>
-											<th>City</th>
-											<th>Country</th>
-											<th>Login Time</th>
+										
+											<th>Seater</th>
+											<th>Room No.</th>
+											<th>Fees (PM) </th>
+
+											<th>Posting Date  </th>
+											<th>Action</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
 											<th>Sno.</th>
-											<th>User Id</th>
-											<th>User Email</th>
-											<th>IP</th>
-											<th>City</th>
-											<th>Country</th>
-											<th>Login Time</th>
+											<th>Seater</th>
+											<th>Room No.</th>
+										
+											<th>Fees (PM) </th>
+											<th>Posting Date  </th>
+											<th>Action</th>
 										</tr>
 									</tfoot>
 									<tbody>
 <?php	
 $aid=$_SESSION['id'];
-$ret="select * from userlog";
+$ret="select * from rooms";
 $stmt= $mysqli->prepare($ret) ;
 //$stmt->bind_param('i',$aid);
-$stmt->execute() ;
+$stmt->execute() ;//ok
 $res=$stmt->get_result();
 $cnt=1;
 while($row=$res->fetch_object())
 	  {
 	  	?>
 <tr><td><?php echo $cnt;;?></td>
-<td><?php echo $row->userId;?></td>
-<td><?php echo $row->userEmail;?></td>
-<td><?php echo $row->userIp;?></td>
-<td><?php echo $row->city;?></td>
-<td><?php echo $row->country;?></td>
-<td><?php echo $row->loginTime;?></td>
+<td><?php echo $row->seater;?></td>
+<td><?php echo $row->room_no;?></td>
+<td><?php echo $row->fees;?></td>
+<td><?php echo $row->posting_date;?></td>
+<td><a href="edit-room.php?id=<?php echo $row->id;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+<a href="manage-rooms.php?del=<?php echo $row->id;?>" onclick="return confirm("Do you want to delete");"><i class="fa fa-close"></i></a></td>
 										</tr>
 									<?php
 $cnt=$cnt+1;
